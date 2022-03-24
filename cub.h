@@ -12,9 +12,18 @@
 typedef struct s_state
 {
 	char	**map;
+	char	map_char[8];
 	int		map_height;
 	int		map_width;
 	int		pos_map;
+	int		pos1_no;
+	int		pos1_so;
+	int		pos1_we;
+	int		pos1_ea;
+	char	**pos_no;
+	char	**pos_so;
+	char	**pos_we;
+	char	**pos_ea;
 } t_state;
 
 #define BUFFER_SIZE 1
@@ -33,10 +42,12 @@ int		mem_alloc_columns(t_state *state);
 int		mem_alloc_rows(t_state *state, char *file);
 int		read_map(t_state *state, char *file);
 int		map_error_check(t_state *state);
+int		checker_line(int fd);
 
 /*  */
 void	print_map(t_state *state);
 int		get_to_pos(t_state *state, int pos, int fd);
+int		ft_isinstring(char *string, char c);
 
 /* GNL */
 char	*get_next_line(int fd);

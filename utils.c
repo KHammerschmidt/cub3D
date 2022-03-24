@@ -29,3 +29,18 @@ void	ft_free_strarray(char ***arr)
 	free(*arr);
 	*arr = NULL;
 }
+
+/* Checks if character c is in string, returns 0 if found. */
+int	ft_isinstring(char *string, char c)
+{
+	int	i;
+
+	i = 0;
+	while (string[i] != '\0')
+	{
+		if (string[i] == c)
+			return (0);
+		i++;
+	}
+	return (1);
+}

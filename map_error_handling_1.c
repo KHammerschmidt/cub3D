@@ -6,7 +6,7 @@
 /*   By: khammers <khammers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 18:38:17 by khammers          #+#    #+#             */
-/*   Updated: 2022/03/19 19:13:51 by khammers         ###   ########.fr       */
+/*   Updated: 2022/03/24 19:37:51 by khammers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,88 @@ static int	check_necessary_characters(t_state *state)
 	return (0);
 }
 
+int	check_column_wall(t_state *state, int x, int y)
+{
+	int	j;
+
+	j = 0;
+	if (y == state->map_height)
+	{
+		printf("Last column!\n");
+		return (1);
+	}
+	while ((j + y) != state->map_height)
+	{
+		if (state->map[y + j][x] == '1')
+			return (0);
+		j++;
+
+	}
+	return (1);
+}
+
+int	ft_strchr_pos_last(char *s, char c)
+{
+	int	i;
+	int	save;
+
+	i = 0;
+	save = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == 'c')
+			save = i;
+		i++;
+	}
+	return (save);
+}
+
+int	check_row_wall(t_state *state, int x, int y)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strchr_pos_last(state->map[y], '1') == x)
+		return (0);
+	while ((x + i) != state->map_width)
+	{
+		if (state->map[y][x + i] == '1')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	check_surrounding_walls(t_state *state)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while (y != state->map_height)
+	{
+		x = 0;
+		while (x != state->map_width)
+		{
+			if (state->map[y][x] != '1')
+			{
+				if (check_column_wall(state, x, y) == 0 && check_row_wall(state, x, y) == 0)
+					x++;
+				else
+				{
+					ft_free_strarray(&state->map);
+					return (-1);
+				}
+			}
+			else
+				x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
 int	map_error_check(t_state *state)
 {
 	if (check_forbidden_characters(state) != 0)
@@ -111,8 +193,10 @@ int	map_error_check(t_state *state)
 		ft_putstr_fd("Error\nMissing start position in *.cub file.\n", 1);
 		return (-1);
 	}
+	if (check_surrounding_walls(state) != 0)
+	{
+		ft_putstr_fd("Error\nGamefield must be surrounded by walls.\n", 1);
+		return (-1);
+	}
 	return (0);
-	//check for surrounding walls
-	//check for empty lines
-	//
 }

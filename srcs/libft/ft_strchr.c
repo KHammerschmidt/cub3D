@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: katharinahammerschmidt <katharinahammer    +#+  +:+       +#+        */
+/*   By: khammers <khammers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 08:32:39 by khammers          #+#    #+#             */
-/*   Updated: 2022/03/07 17:48:57 by katharinaha      ###   ########.fr       */
+/*   Updated: 2022/03/21 10:56:53 by khammers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/* Locates the first occurence of c, the character to be searched in s. Returns 
-a pointer to the (first occurence) located character, or NULL if the character 
+/* Locates the first occurence of c, the character to be searched in s. Returns
+a pointer to the (first occurence) located character, or NULL if the character
 does not appear in the string. */
 char	*ft_strchr(const char *s, int c)
 {
@@ -29,5 +29,3 @@ char	*ft_strchr(const char *s, int c)
 	else
 		return (NULL);
 }
-
-

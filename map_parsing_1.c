@@ -14,84 +14,24 @@ int	open_cub_file(char *file, int *fd)
 	return (0);
 }
 
-/* Checks for an empty line when specifying the map in *.cub file. */
-int	check_for_empty_lines(t_state *state, char *file)
+/* Checks if there are any characters found in line which are not map characters.
+If so, the start of the map has not bee n found. */
+static int	check_characters(t_state *state, char *line)
 {
-	int		fd;
-	char	*line;
+	int	i;
+	int	j;
 
-	fd = 0;
-	line = NULL;
-	if (open_cub_file(file, &fd) == -1)
-		return (-1);
-	line = get_next_line(fd);
-	while (line != NULL)
+	i = 0;
+	j = 0;
+	while (i < ft_strlen(line) - 1)
 	{
-		if (ft_strlen(line) == 0 || line[0] == '\n')
-		{
-			printf("Error\nEmpty line found in map.\n");
-			return (-1);
-		}
-		ft_free_string(&line);
-		line = get_next_line(fd);
+		j = 0;
+		while (line[i] != state->map_char[j] && state->map_char[j] != '\0')
+			j++;
+		if (state->map_char[j] == '\0')
+			return (1);
+		i++;
 	}
-	ft_free_string(&line);
-	close(fd);
-	return (0);
-}
-
-static int verify_map_start(char *line, int x)
-{
-	while (line[x] != '1')
-		x++;
-	if (line[x] == '1')
-		return (0);
-	return (1);
-}
-
-static int	get_map_start(t_state *state, char *file)
-{
-	int		x;
-	int		y;
-	int		fd;
-	char	*line;
-
-	x = 0;
-	y = 0;
-	fd = 0;
-	line = NULL;
-	if (open_cub_file(file, &fd) == -1)
-		return (-1);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		while (line[x])
-		{
-			if (line[x] == ' ' || line[x] == '1' || line[x] == '0')
-			{
-				if (line[x] != '1')
-				{
-					if (verify_map_start(line, x) == 0)
-					{
-						state->pos_map = y;
-						close(fd);
-						ft_free_string(&line);
-						break ;
-					}
-				}
-			}
-			x++;
-		}
-		ft_free_string(&line);
-		line = get_next_line(fd);
-		y++;
-	}
-	if (state->pos_map == 0)
-	{
-		ft_putstr_fd("Error\nNo valid map found in *.cub.\n");
-		return (-1);
-	}
-	ft_free_string(&line);
 	return (0);
 }
 
@@ -102,9 +42,11 @@ int	get_to_pos(t_state *state, int pos, int fd)
 	int		i;
 
 	i = 0;
-	while (i != pos && line != NULL)
+	while (i != pos)
 	{
 		line = get_next_line(fd);
+		if (line == NULL)
+			break ;
 		ft_free_string(&line);
 		i++;
 	}
@@ -113,69 +55,63 @@ int	get_to_pos(t_state *state, int pos, int fd)
 	return (0);
 }
 
-static int	checker_identifier(t_state *state, char *file)
+static int	check_identifiers(t_state *state)
 {
-	int		x;
-	int		y;
-	int		fd;
-	char	*line;
+	if (state->pos_no == NULL || state->pos_so == NULL || state->pos_ea == NULL
+		|| state->pos_we == NULL || state->pos_map == -5)
+	{
+		ft_putstr_fd("Error\n*.cub file is missing information\n", 1);
+		return (-1);
+	}
+	return (0);
+}
 
-	x = 0;
-	y = 0;
+int	get_identifiers(t_state *state, char *file)
+{
+	int		fd;
+	int		i;
+	char 	*line;
+
+	i = 0;
 	fd = 0;
 	line = NULL;
 	if (open_cub_file(file, &fd) == -1)
 		return (-1);
-
 	line = get_next_line(fd);
+	state->pos_map = -5;
 	while (line != NULL)
 	{
-		while (line[x])
-		{
-			if (line[x] == ' ' || line[x] == '1' || line[x] == '0')
-
-			{
-				if (line[x] != '1')
-				{
-					if (verify_map_start(line, x) == 0)
-					{
-						state->pos_map = y;
-						close(fd);
-						ft_free_string(&line);
-						break ;
-					}
-				}
-			}
-			x++;
-		}
+		if (ft_strnstr(line, "NO", ft_strlen(line)) != 0)
+			state->pos_no = ft_split(line, ' ');
+		if (ft_strnstr(line, "SO", ft_strlen(line)) != 0)
+			state->pos_so = ft_split(line, ' ');
+		if (ft_strnstr(line, "EA", ft_strlen(line)) != 0)
+			state->pos_ea = ft_split(line, ' ');
+		if (ft_strnstr(line, "WE", ft_strlen(line)) != 0)
+			state->pos_we = ft_split(line, ' ');
+		// if (ft_strnstr(line, "F", ft_strlen(line)) != 0)
+		// 	state->pos_no = ft_split(line, ' ');
+		// if (ft_strnstr(line, "C", ft_strlen(line)) != 0)
+		// 	state->pos_no = ft_split(line, ' ');
+		if (state->pos_map == -5 && line[0] != '\n' && check_characters(state, line) == 0)
+			state->pos_map = i;
 		ft_free_string(&line);
 		line = get_next_line(fd);
-		y++;
-	}
-	if (state->pos_map == 0)
-	{
-		ft_putstr_fd("Error\nNo valid map found in *.cub.\n", 1);
-		return (-1);
+		i++;
 	}
 	ft_free_string(&line);
+	close(fd);
+	if (check_identifiers(state) != 0)
+	{
+		ft_putstr_fd("Error\nNo map found in *.cub file.\n", 1);
+			return (-1);
+	}
 	return (0);
 }
 
-/*	Parsing the *.cub map.
-
-	Identifying the height of the map and the width of each row for memory
-	allocation. Parsing the content of the map into state->map[][]. */
-int	parsing(t_state *state, int argc, char **argv)
+static int	parse_map(t_state *state, char **argv)
 {
-	if (checker_identifier(state, argv[1]) != 0)
-		return (-1);
-
-
-	get_map_start(state, argv[1]);
-	if (check_for_empty_lines(state, argv[1]) != 0)
-		return (-1);
-	get_map_height(state, argv[1]);
-	if (state->map_height == -1)
+	if (get_map_height(state, argv[1]) == -1)
 		return (-1);
 	get_max_width(state, argv[1]);
 	if (state->map_width == -1)
@@ -185,6 +121,19 @@ int	parsing(t_state *state, int argc, char **argv)
 	if (mem_alloc_rows(state, argv[1]) == -1)
 		return (-1);
 	if (read_map(state, argv[1]) == -1)
+		return (-1);
+	return (0);
+}
+
+/*	Parsing the *.cub map.
+
+	Identifying the height of the map and the width of each row for memory
+	allocation. Parsing the content of the map into state->map[][]. */
+int	parsing(t_state *state, int argc, char **argv)
+{
+	if (get_identifiers(state, argv[1]) != 0)
+		return (-1);
+	if (parse_map(state, argv) != 0)
 		return (-1);
 	return (0);
 }

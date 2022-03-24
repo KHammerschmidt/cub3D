@@ -13,23 +13,12 @@ static void	init_map(t_state *state)
 		x = 0;
 		while (x != state->map_width)
 		{
-			state->map[y][x] = '0';
+			state->map[y][x] = ' ';
 			x++;
 		}
 		y++;
 	}
 }
-
-// static int	get_width_per_row(t_state *state, int y, char *line)
-// {
-// 	int	width;
-
-// 	if (y == (state->map_height -1))
-// 		width = ft_strlen(line);
-// 	else
-// 		width = ft_strlen(line) - 1;
-// 	return (width);
-// }
 
 static int	read_map_grid(t_state *state, int fd)
 {
@@ -91,6 +80,7 @@ int	read_map(t_state *state, char *file)
 	if (open_cub_file(file, &fd) == -1)
 		return (-1);
 	init_map(state);
+	get_to_pos(state, state->pos_map, fd);
 	if (read_map_grid(state, fd) != 0)
 	{
 		close(fd);
