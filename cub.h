@@ -9,21 +9,30 @@
 # include "./srcs/libft/libft.h"
 
 
+
+//xpm to image!!!
+
+
+
+
+typedef struct s_map
+{
+	int			map_height;
+	int			map_width;
+	int			pos_map;
+	char		**map;
+	char		**path_text;
+	char		**colours;
+	unsigned long	ceiling; //(0)
+	unsigned long	floor; //(1)
+} t_map;
+
+
 typedef struct s_state
 {
-	char	**map;
-	char	map_char[8];
-	int		map_height;
-	int		map_width;
-	int		pos_map;
-	int		pos1_no;
-	int		pos1_so;
-	int		pos1_we;
-	int		pos1_ea;
-	char	**pos_no;
-	char	**pos_so;
-	char	**pos_we;
-	char	**pos_ea;
+	t_map	*map;
+	char	**rgb;
+	char	**xpm;
 } t_state;
 
 #define BUFFER_SIZE 1
@@ -31,7 +40,7 @@ typedef struct s_state
 int		main(int argc, char **argv);
 
 /* Input verification and functions for map parsing & map error handling. */
-int		input_verification(int argc, char **argv);
+int		check_args(int argc, char **argv);
 
 /* Map parsing */
 int		open_cub_file(char *file, int *fd);
@@ -41,8 +50,14 @@ int		get_max_width(t_state *state, char *file);
 int		mem_alloc_columns(t_state *state);
 int		mem_alloc_rows(t_state *state, char *file);
 int		read_map(t_state *state, char *file);
-int		map_error_check(t_state *state);
+int		map_error_checkmap_error_check(t_state *state);
 int		checker_line(int fd);
+int		map_error_check(t_state *state);
+int		parse_map(t_state *state, char **argv);
+
+
+int		get_identifiers(t_state *state, char *file);
+int		check_identifiers(t_state *state);
 
 /*  */
 void	print_map(t_state *state);
@@ -56,5 +71,6 @@ char	*ft_get_output(char **line);
 /* Utils */
 void	ft_free_string(char **string);
 void	ft_free_strarray(char ***arr);
+int		ft_arrlen(char **token);
 
 #endif

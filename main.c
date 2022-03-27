@@ -1,37 +1,50 @@
 #include "cub.h"
 
-static void	init_struct(t_state *state)
+static int	init_struct(t_state *state)
 {
-	// ft_memset(&state, 0, sizeof(t_state));
-	// state->map_char = "01NSEW";
-	state->map_char[0] = '0';
-	state->map_char[1] = '1';
-	state->map_char[2] = 'N';
-	state->map_char[3] = 'S';
-	state->map_char[4] = 'E';
-	state->map_char[5] = 'W';
-	state->map_char[6] = ' ';
-	state->map_char[7] = '\0';
-
-	state->pos_no = NULL;
-	state->pos_so = NULL;
-	state->pos_we = NULL;
-	state->pos_ea = NULL;
+	state->map = ft_calloc(sizeof(t_map), 1);
+	if (state->map == NULL)
+	{
+		printf("Error\nMemory allocation error\n");
+		return (-1);
+	}
+	state->map->map_height = 0;
+	state->map->map_width = 0;
+	state->map->map = NULL;
+	state->map->pos_map = -5;
+	state->map->path_text = ft_calloc(sizeof(char *), 5);
+	state->map->colours = ft_calloc(sizeof(char *), 3);
+	if (state->map->path_text == NULL || state->map->path_text == NULL)
+	{
+		printf("Error\nMemory allocation error\n");
+		// ft_free_all(state);
+		return (-1);
+	}
+	state->map->colours[2] = NULL;
+	state->map->path_text[4] = NULL;
+	return (0);
 }
+
+/* // void	ft_free_all(t_state *state)
+// {
+// 	free_colours(state);
+// 	free_path_text(state);
+// 	free_map(state);
+// } */
 
 int	main(int argc, char *argv[])
 {
 	t_state	state;
 
 	state = (t_state){0};
-	init_struct(&state);
-	if (input_verification(argc, argv) == -1)
+	if (init_struct(&state) != 0)
+		return (1);
+	if (check_args(argc, argv) == -1)
 		return (1);
 	if (parsing(&state, argc, argv) == -1)
 		return (1);
-	if (map_error_check(&state) != 0)
-		return (1);
 	print_map(&state);
+	// ft_free(state);
 	printf("Everything goes to plan!\n");
 	return (0);
 }

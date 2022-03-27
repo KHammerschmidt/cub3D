@@ -2,7 +2,7 @@
 
 /* Check for 2 command line args, the last one of *.cub format. Return 0 if
 input is correct, print an error message and return -1 if not. */
-int	input_verification(int argc, char **argv)
+int	check_args(int argc, char **argv)
 {
 	char	*map_format;
 
@@ -19,4 +19,3 @@ int	input_verification(int argc, char **argv)
 	}
 	return (0);
 }
-

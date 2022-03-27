@@ -5,11 +5,15 @@ FLAGS		=		-g -Wall -Werror -Wextra -L ./srcs/mlx -lmlx -L ./srcs/libft -lft -fra
 
 SRC			=		main.c					\
 					get_next_line.c			\
-					input_verification.c	\
-					map_parsing_1.c			\
-					map_parsing_2.c			\
+					check_args.c			\
+					parsing.c				\
+					parsing_identifiers.c	\
+					parsing_map_1.c			\
+					parsing_map_2.c			\
+					parsing_map_3.c			\
+					map_mem_alloc.c			\
 					map_error_handling_1.c	\
-					map_mem_allocation.c	\
+					map_error_handling_2.c	\
 					utils.c
 
 LIBFT_OBJ	=		./srcs/libft/libft.a

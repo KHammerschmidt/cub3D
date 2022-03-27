@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: katharinahammerschmidt <katharinahammer    +#+  +:+       +#+        */
+/*   By: khammers <khammers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 18:54:09 by khammers          #+#    #+#             */
-/*   Updated: 2022/03/07 17:54:58 by katharinaha      ###   ########.fr       */
+/*   Updated: 2022/03/25 13:42:45 by khammers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/* Compares lexicographically s1 and s2 but not more than n characters. 
+/* Compares lexicographically s1 and s2 but not more than n characters.
 Characters that appear after null-terminator are not compared. Returns an int
 greater than, equal to or less than 0 according if s1 is greater than, equal
 to or less than string 2. */
