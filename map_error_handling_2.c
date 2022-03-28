@@ -26,51 +26,52 @@ static int	convert_rgb(t_state *state, int *rgb)
 	i = 0;
 	while (rgb[i] != -5)
 	{
-
+		printf("ABC     ");
 		i++;
 	}
+	printf("\n");
+	return (0);
 }
 
-/* Checks if RGB values are valid. */
-static int	check_valid_rgb(t_state *state)
+static int	check_rgb(t_state *state, int index)
 {
 	int		i;
 	int		j;
-	int		*rgb;
+	int		k;
 	char	**temp;
 	char	*save;
 
 	i = 0;
 	j = 0;
-	while (i < 2)
+	k = 0;
+	while (state->map->colours[i])
 	{
-		save = ft_strtrim(state->map->colours[i]);		//cut out newline
-		temp = ft_split(save, ',');						//split by comma
-		if (!temp)
+		save = ft_strtrim(state->map->colours[i], "\n");
+		if (save == NULL)
 			return (-1);
-		while (temp[i])
+		temp = ft_split(save, ',');
+		while (temp[j])
 		{
-			save = ft_strtrim(temp[i], "\n");
-			rgb[j] = ft_atoi(save);
-			if (rgb[j] < 0 || rgb[j] > 255)
+			state->map->rgb[k] = ft_atoi(temp[j]);
+			if (state->map->rgb[k] < 0 || state->map->rgb[k] > 255)
 			{
 				ft_putstr_fd("Error\nRGB value out of range\n", 1);
 				return (-1);
 			}
-			rgb[i] = -5;
-			if (i == 0)
-				state->map->ceiling = convert_rgb(state, rgb);
-			ft_free_string(&save);
-			i++;
 			j++;
+			k++;
 		}
-		if (i == 1)
-			state->map->floor = convert_rgb(rgb[i]);
-		printf("%d %d %d\n", rgb[0], rgb[1], rgb[2]);
-		ft_free_strarray(&temp);
+		i++;
 	}
-	// rgb[i] = 0;
 	return (0);
+}
+
+static void	transform_rgb(t_state *state )
+{
+	//bitshifting
+	state->ceiling = (state->map->rgb[0] << 16) + (state->map->rgb[1] << 8) + (state->map->rgb[2] << 2);
+	state->floor = (state->map->rgb[3] << 16) + (state->map->rgb[4] << 8) + (state->map->rgb[5] << 2);
+	printf("ceiling: %d    floor: %d\n", state->ceiling, state->floor);
 }
 
 /* Checks for right strlen of path and colour array, right range of RGV values
@@ -80,9 +81,9 @@ int	check_identifiers(t_state *state)
 	if (ft_arrlen(state->map->path_text) != 4 || ft_arrlen(state->map->colours) != 2
 		|| state->map->pos_map == -5)
 		return (-1);
-	//HOW TO CHECK FOR VALID PATH TO TEXTURE??? MINILIBX FUNCTION
-	check_valid_rgb(state);
-	// check_valid_path();
-
+	if (check_rgb(state, 0) != 0 || check_rgb(state, 1) != 0)
+		return (-1);
+	transform_rgb(state);
+	// //HOW TO CHECK FOR VALID PATH TO TEXTURE??? MINILIBX FUNCTION
 	return (0);
 }

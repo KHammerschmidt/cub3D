@@ -13,7 +13,7 @@ static int	init_struct(t_state *state)
 	state->map->map = NULL;
 	state->map->pos_map = -5;
 	state->map->path_text = ft_calloc(sizeof(char *), 5);
-	state->map->colours = ft_calloc(sizeof(char *), 3);
+	state->map->colours = ft_calloc(sizeof(char *), 4);
 	if (state->map->path_text == NULL || state->map->path_text == NULL)
 	{
 		printf("Error\nMemory allocation error\n");

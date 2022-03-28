@@ -23,16 +23,17 @@ typedef struct s_map
 	char		**map;
 	char		**path_text;
 	char		**colours;
-	unsigned long	ceiling; //(0)
-	unsigned long	floor; //(1)
+	int			rgb[6];
 } t_map;
 
 
 typedef struct s_state
 {
 	t_map	*map;
-	char	**rgb;
-	char	**xpm;
+	int			ceiling;
+	int			floor;
+	// char	**rgb;
+	// char	**xpm;
 } t_state;
 
 #define BUFFER_SIZE 1
