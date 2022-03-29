@@ -56,7 +56,7 @@ int		checker_line(int fd);
 int		map_error_check(t_state *state);
 int		parse_map(t_state *state, char **argv);
 
-
+int		parse_identifiers(t_state *state, char *file);
 int		get_identifiers(t_state *state, char *file);
 int		check_identifiers(t_state *state);
 

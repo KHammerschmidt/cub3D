@@ -6,7 +6,7 @@
 	allocation. Parsing the content of the map into state->map[][]. */
 int	parsing(t_state *state, int argc, char **argv)
 {
-	if (get_identifiers(state, argv[1]) == -1)
+	if (parse_identifiers(state, argv[1]) == -1)
 		return (-1);
 	if (parse_map(state, argv) != 0)
 		return (-1);

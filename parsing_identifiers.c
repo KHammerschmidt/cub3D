@@ -87,3 +87,12 @@ int	get_identifiers(t_state *state, char *file)
 	close(fd);
 	return (0);
 }
+
+int	parse_identifiers(t_state *state, char *file)
+{
+	if (get_identifiers(state, file) != 0)
+		return (-1);
+	if (check_identifiers(state) != 0)
+		return (-1);
+	return (0);
+}
