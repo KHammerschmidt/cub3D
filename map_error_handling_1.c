@@ -43,7 +43,7 @@ static int	check_forbidden_characters(t_state *state)
 			if (state->map->map[y][x] != '0' && state->map->map[y][x] != '1'
 				&& state->map->map[y][x] != 'N' && state->map->map[y][x] != 'S'
 				&& state->map->map[y][x] != 'E' && state->map->map[y][x] != 'W'
-				&& state->map->map[y][x] != ' ')
+				&& state->map->map[y][x] != ' ' && state->map->map[y][x] != '\0')
 					return (-1);
 			x++;
 		}
@@ -109,44 +109,148 @@ static int	check_necessary_characters(t_state *state)
 // 	return (1);
 // }
 
-// int	ft_strchr_pos_last(char *s, char c)
-// {
-// 	int	i;
-// 	int	save;
+/* Loops within map over free spaces and detects the first occurence of
+a wall. If first character is not a wall, -1 is returned. */
+static int	ft_strchr_pos_first(t_state *state, int y)
+{
+	int	x;
 
-// 	i = 0;
-// 	save = 0;
-// 	while (s[i] != '\0')
-// 	{
-// 		if (s[i] == 'c')
-// 			save = i;
-// 		i++;
-// 	}
-// 	return (save);
-// }
+	x = 0;
+	while (state->map->map[y][x] == ' ' || state->map->map[y][x] == '\0')
+		x++;
+	if (x + 1 == state->map->map_width)
+		return (-1);
+	if (state->map->map[y][x] != '1')
+		return (-1);
+	return (0);
+}
 
-// int	check_row_wall(t_state *state, int x, int y)
-// {
-// 	int	i;
+/* Saves the last occurence of a wall in map. */
+static int	ft_strchr_pos_last(t_state *state, int y, char c)
+{
+	int	x;
+	int	save;
 
-// 	i = 0;
-// 	if (ft_strchr_pos_last(state->map->map[y], '1') == x)
-// 		return (0);
-// 	while ((x + i) != state->map->map_width)
-// 	{
-// 		if (state->map->map[y][x + i] == '1')
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
+	x = 0;
+	save = 0;
+	while (x < state->map->map_width)
+	{
+		if (state->map->map[y][x] == c)
+			save = x;
+		x++;
+	}
+	return (save);
+}
+/* Checks whether each row of map starts with a wall element and
+ends with one. */
+int	check_row(t_state *state, int y)
+{
+	int	i;
+	int	rw_first;
+	int	rw_last;
+
+	i = 0;
+	rw_first = ft_strchr_pos_first(state, y);
+	if (rw_first == -1)
+		return (-1);
+	rw_last = ft_strchr_pos_last(state, y, '1');
+	if (rw_last == -1 || rw_last == rw_first && ft_strlen(state->map->map[y]) != 1)
+		return (-1);
+	i = rw_last;
+	while (i != state->map->map_width)
+	{
+		if (state->map->map[y][i] != '1' && state->map->map[y][i] != '\0' && state->map->map[y][i] != ' ')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
+int	get_cln_wall_first(t_state *state, int x)
+{
+	int	y;
+
+	y = 0;
+	while (y != state->map->map_height)
+	{
+		while (state->map->map[y][x] != '1')
+			y++;
+		if (state->map->map[y][x] == '1')
+			return (0);
+	}
+	if (y == state->map->map_height)
+		return (-1);
+	return (0);
+}
+
+int	check_column(t_state *state, int x)
+{
+	int	cl_first;
+	int	cl_last;
+
+	cl_first = get_cln_wall_first(state, x);
+	if (cl_first == -1)
+		return (-1);
+	printf("cl_first: %d\n", cl_first);
+	// cl_last = get_cln_wall_last(state, x);
+	// if (cl_last == -1 || cl_last == cl_first && state->map->map_height != 1)
+	// 	return (-1);
+	return (0);
+}
+static int	check_surrounding_walls(t_state *state)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	x = 0;
+	
+	while (y != state->map->map_height)
+	{
+		if (check_row(state, y) != 0)
+			return (-1);
+		y++;
+	}
+	while (x != state->map->map_width)
+	{
+		if (check_column(state, x) != 0)
+		{
+			return (-1);
+		}
+		x++;
+	}
+
+
+
+		// while (x != state->map->map_width)
+		// {
+		// 	if (state->map->map[y][x] != '1')
+		// 	{
+		// 		if (check_row(state, y, x) == 0)
+		// 			x++;
+		// 		else
+		// 		{
+		// 			printf("The end: [%d][%d]\n", y);
+		// 			// ft_free_strarray(&state->map->map);
+		// 			return (-1);
+		// 		}
+		// 		// if (check_column_wall(state, x, y) == 0 && check_row_wall(state, x, y) == 0)
+		// 		// {
+		// 		// 	printf("[%d][%d]\n", y, x);
+		// 		// 	x++;
+		// 		// }
+		// 	}
+		// 	else
+		// 		x++;
+		// }
+	return (0);
+}
 
 // static int	check_surrounding_walls(t_state *state)
 // {
 // 	int	x;
 // 	int	y;
 
-// 	x = 0;
 // 	y = 0;
 // 	while (y != state->map->map_height)
 // 	{
@@ -156,10 +260,14 @@ static int	check_necessary_characters(t_state *state)
 // 			if (state->map->map[y][x] != '1')
 // 			{
 // 				if (check_column_wall(state, x, y) == 0 && check_row_wall(state, x, y) == 0)
+// 				{
+// 					printf("[%d][%d]\n", y, x);
 // 					x++;
+// 				}
 // 				else
 // 				{
-// 					ft_free_strarray(&state->map->map);
+// 					printf("The end: [%d][%d]\n", y, x);
+// 					// ft_free_strarray(&state->map->map);
 // 					return (-1);
 // 				}
 // 			}
@@ -173,11 +281,11 @@ static int	check_necessary_characters(t_state *state)
 
 int	map_error_check(t_state *state)
 {
-	if (check_identifiers(state) != 0)
-	{
-		ft_putstr_fd("Error\nNo valid information in *.cub file\n", 1);
-		return (-1);
-	}
+	// if (check_identifiers(state) != 0)
+	// {
+	// 	ft_putstr_fd("Error\nNo valid information in *.cub file\n", 1);
+	// 	return (-1);
+	// }
 	// if (check_forbidden_characters(state) != 0)
 	// {
 	// 	ft_putstr_fd("Error\nInvalid characters in *.cub file.\n", 1);
@@ -188,11 +296,11 @@ int	map_error_check(t_state *state)
 	// 	ft_putstr_fd("Error\nMissing start position in *.cub file.\n", 1);
 	// 	return (-1);
 	// }
-	// if (check_surrounding_walls(state) != 0)
-	// {
-	// 	ft_putstr_fd("Error\nGamefield must be surrounded by walls.\n", 1);
-	// 	return (-1);
-	// }
+	if (check_surrounding_walls(state) != 0)
+	{
+		ft_putstr_fd("Error\nGamefield must be surrounded by walls.\n", 1);
+		return (-1);
+	}
 	// 	if (check_inner_map(state, x, y) != 0)
 	// {
 	// 	ft_free_strarray(&state->map->map);

@@ -1,25 +1,5 @@
 #include "cub.h"
 
-/* Checks for a valid texture path. */
-// static int	check_identifier_content(char	**string)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (string[i])
-// 	{
-// 		if (i == 0 && ft_strlen(string[i]) != 2)
-// 			return (-1);
-// 		if (i == 1 && ft_strncmp(string[i], "/", 1) != 0
-// 			&& (ft_strncmp(string[i], ".", 1) != 0))
-// 			return (-1);
-// 		i++;
-// 	}
-// 	if (i != 1)
-// 		return (-1);
-// 	return (0);
-// }
-
 /* Transforms rgb values from char to int and checks their range. */
 static int	parse_rgb_info(t_state *state, int i, int *k)
 {
@@ -63,11 +43,10 @@ static int	get_rgb(t_state *state)
 /* Transforms rgb values into one int using bitshifting. */
 static void	transform_rgb(t_state *state )
 {
-	state->ceiling = (state->map->rgb[0] << 16) + (state->map->rgb[1] << 8)
-		+ (state->map->rgb[2]);
-	state->floor = (state->map->rgb[3] << 16) + (state->map->rgb[4] << 8)
-		+ (state->map->rgb[5]);
-	// printf("ceiling: %d    floor: %d\n", state->ceiling, state->floor);
+	state->ceiling = ((state->map->rgb[0] & 0xff) << 16) + \
+		((state->map->rgb[1] & 0xff) << 8) + (state->map->rgb[2] & 0xff);
+	state->floor = ((state->map->rgb[3] & 0xff) << 16) + \
+		((state->map->rgb[4] & 0xff) << 8) + (state->map->rgb[5] & 0xff);
 }
 
 /* Checks for right strlen of path and colour array, right range of RGV values
@@ -85,3 +64,23 @@ int	check_identifiers(t_state *state)
 	//similar to open but minilibx functino
 	return (0);
 }
+
+/* Checks for a valid texture path. */
+// static int	check_identifier_content(char	**string)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (string[i])
+// 	{
+// 		if (i == 0 && ft_strlen(string[i]) != 2)
+// 			return (-1);
+// 		if (i == 1 && ft_strncmp(string[i], "/", 1) != 0
+// 			&& (ft_strncmp(string[i], ".", 1) != 0))
+// 			return (-1);
+// 		i++;
+// 	}
+// 	if (i != 1)
+// 		return (-1);
+// 	return (0);
+// }

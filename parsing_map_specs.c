@@ -44,7 +44,7 @@ static int	check_empty_line(int fd)
 	line = get_next_line(fd);
 	if (line != NULL && ft_isinstring(line, '1') == 0)
 	{
-		ft_putstr_fd("Error\nEmpty lines in map are forbidden.\n", 1);
+		ft_putstr_fd("Error\nNo valid map content\n", 1);
 		ft_free_string(&line);
 		close(fd);
 		return (-1);

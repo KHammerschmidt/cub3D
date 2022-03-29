@@ -13,8 +13,6 @@
 //xpm to image!!!
 
 
-
-
 typedef struct s_map
 {
 	int			map_height;

@@ -3,17 +3,17 @@ NAME		=		cub3D
 CC 			=		gcc
 FLAGS		=		-g -Wall -Werror -Wextra -L ./srcs/mlx -lmlx -L ./srcs/libft -lft -framework OpenGl -framework AppKit
 
-SRC			=		main.c					\
-					get_next_line.c			\
-					check_args.c			\
-					parsing.c				\
-					parsing_identifiers.c	\
-					parsing_map_1.c			\
-					parsing_map_2.c			\
-					parsing_map_3.c			\
-					map_mem_alloc.c			\
-					map_error_handling_1.c	\
-					map_error_handling_2.c	\
+SRC			=		main.c						\
+					get_next_line.c				\
+					check_args.c				\
+					parsing.c					\
+					parsing_identifiers.c		\
+					parsing_map_content.c		\
+					parsing_map_specs.c			\
+					parsing_map_utils.c			\
+					map_mem_alloc.c				\
+					check_error_identifiers.c	\
+					map_error_handling_1.c		\
 					utils.c
 
 LIBFT_OBJ	=		./srcs/libft/libft.a
