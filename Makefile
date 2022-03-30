@@ -4,7 +4,6 @@ CC 			=		gcc
 FLAGS		=		-g -Wall -Werror -Wextra -L ./srcs/mlx -lmlx -L ./srcs/libft -lft -framework OpenGl -framework AppKit
 
 SRC			=		main.c						\
-					get_next_line.c				\
 					check_args.c				\
 					parsing.c					\
 					parsing_identifiers.c		\
@@ -13,8 +12,10 @@ SRC			=		main.c						\
 					parsing_map_utils.c			\
 					map_mem_alloc.c				\
 					check_error_identifiers.c	\
-					check_error_walls.c			\
+					check_error_walls_row.c		\
+					check_error_walls_column.c	\
 					map_error_handling_1.c		\
+					get_next_line.c				\
 					utils.c
 
 LIBFT_OBJ	=		./srcs/libft/libft.a

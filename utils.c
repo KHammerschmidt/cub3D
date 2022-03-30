@@ -44,3 +44,14 @@ int	ft_isinstring(char *string, char c)
 	}
 	return (1);
 }
+
+/* Returns the length of an array. */
+int	ft_arrlen(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}

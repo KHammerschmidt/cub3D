@@ -58,7 +58,9 @@ int		parse_identifiers(t_state *state, char *file);
 int		get_identifiers(t_state *state, char *file);
 int		check_identifiers(t_state *state);
 int		check_walls(t_state *state);
-
+int		check_column(t_state *state, int x);
+int		check_row(t_state *state, int y);
+int		map_error_check(t_state *state);
 /*  */
 void	print_map(t_state *state);
 int		get_to_pos(t_state *state, int pos, int fd);

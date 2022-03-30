@@ -8,12 +8,12 @@ static void	init_map(t_state *state)
 
 	x = 0;
 	y = 0;
-	while (y != state->map->map_height)
+	while (y < state->map->map_height)
 	{
 		x = 0;
-		while (x != state->map->map_width)
+		while (x < state->map->map_width)
 		{
-			state->map->map[y][x] = '\0';
+			state->map->map[y][x] = '-';
 			x++;
 		}
 		y++;
@@ -31,7 +31,7 @@ static int	read_map_grid(t_state *state, int fd)
 	x = 0;
 	line = get_next_line(fd);
 	width = ft_strlen(line) - 1;
-	while (y != state->map->map_height)
+	while (y < state->map->map_height)
 	{
 		x = 0;
 		if (y == (state->map->map_height -1))

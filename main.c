@@ -5,7 +5,7 @@ static int	init_struct(t_state *state)
 	state->map = ft_calloc(sizeof(t_map), 1);
 	if (state->map == NULL)
 	{
-		printf("Error\nMemory allocation error\n");
+		ft_putstr_fd("Error\nMemory allocation error\n", 1);
 		return (-1);
 	}
 	state->map->map_height = 0;
@@ -16,7 +16,7 @@ static int	init_struct(t_state *state)
 	state->map->colours = ft_calloc(sizeof(char *), 4);
 	if (state->map->path_text == NULL || state->map->path_text == NULL)
 	{
-		printf("Error\nMemory allocation error\n");
+		ft_putstr_fd("Error\nMemory allocation error\n", 1);
 		// ft_free_all(state);
 		return (-1);
 	}
@@ -45,6 +45,5 @@ int	main(int argc, char *argv[])
 		return (1);
 	print_map(&state);
 	// ft_free(state);
-	printf("Everything goes to plan!\n");
 	return (0);
 }

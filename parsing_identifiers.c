@@ -19,17 +19,6 @@ static int	check_characters(t_state *state, char *line)
 	return (0);
 }
 
-/* Returns the length of an array. */
-int	ft_arrlen(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
 /* Checks every line for identifiers, cuts newline characters at the end
 of string and saves texture path as well as rgb value in 2D arrays. */
 static int	get_rgb_spawning(t_state *state, char *line)
