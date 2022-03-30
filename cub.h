@@ -57,6 +57,7 @@ int		parse_map(t_state *state, char **argv);
 int		parse_identifiers(t_state *state, char *file);
 int		get_identifiers(t_state *state, char *file);
 int		check_identifiers(t_state *state);
+int		check_walls(t_state *state);
 
 /*  */
 void	print_map(t_state *state);

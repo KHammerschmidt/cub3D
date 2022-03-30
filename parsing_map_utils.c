@@ -14,7 +14,10 @@ void	print_map(t_state *state)
 		x = 0;
 		while (x != state->map->map_width)
 		{
-			printf("[%c]", state->map->map[y][x]);
+			if (state->map->map[y][x] == '\0')
+				printf("[X]");
+			else
+				printf("[%c]", state->map->map[y][x]);
 			x++;
 		}
 		printf("\n");

@@ -13,6 +13,7 @@ SRC			=		main.c						\
 					parsing_map_utils.c			\
 					map_mem_alloc.c				\
 					check_error_identifiers.c	\
+					check_error_walls.c			\
 					map_error_handling_1.c		\
 					utils.c
 
