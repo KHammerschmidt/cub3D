@@ -1,0 +1,34 @@
+Explanation of various testing maps
+
+1)	map.cub
+	working map
+2)	player_1.cub
+	has no player position
+3)	player_2.cub
+	has multiple player positions
+4)	walls_1.cub
+	missing surrounding walls
+5)	walls_2.cub
+	missing walls inside
+6)	file_format.ccub
+	has no valid *.cub format
+7)	xpm_1.cub
+	path to xpm does not exist
+8)	xpm_2.cub
+	missing texture for 'NO'
+9)	rgb_1.cub
+	invalid RGB value
+10)	rgb_2.cub
+	missing RGB value
+11)	content_1.cub
+	identifiers behind map
+12)	content_2.cub
+	multiple identifiers of same information
+13) content_3.cub
+	separating identifiers by multiple spaces, changed order (still valid)
+14)	map_1.cub
+	invalid character in map
+15)	map_2.cub
+	empty line in map
+16)	map_3.cub
+	spaces in map
